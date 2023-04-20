@@ -1,6 +1,6 @@
 import pathlib
 import pygame
-from support import *
+from .support import *
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -55,7 +55,7 @@ class Enemy(pygame.sprite.Sprite):
     def check_player(self):
         if self.player.attacking:
             self.player.enemy = self
-            print("O player estar atacando")
+            # print("O player estar atacando")
         # else:
         #     self.player.attacking = False
 

@@ -1,13 +1,16 @@
 import pathlib
 import pygame
-from settings import *
-from support import *
-from timer_action import Timer
+from .settings import *
+from .support import *
+from .timer_action import Timer
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups: pygame.sprite.Group, surf: pygame.Surface) -> None:
         super().__init__(groups)
         self.surf = surf
+
+        self.detector = None
 
         # animation
         self.animations = {}
@@ -59,9 +62,10 @@ class Player(pygame.sprite.Sprite):
         self.enemy = None
     
     def check_enemy(self):
-        if self.enemy is not None:
-            if self.enemy.player.attacking:
-                print("o inimigo sabe q estou atacando.")
+        # if self.enemy is not None:
+        #     if self.enemy.player.attacking:
+        #         print("o inimigo sabe q estou atacando.")
+        pass
     
     def track_colision(self):
         pygame.draw.rect(self.surf, "red", self.rect, 1)
@@ -72,7 +76,6 @@ class Player(pygame.sprite.Sprite):
             mask_outline[n] = (point[0] + self.rect.x, point[1] + self.rect.y)
             n += 1
         pygame.draw.polygon(self.surf, "green", mask_outline, 1)
-        # pygame.display.flip()
 
     def use_tool(self):
         # print(self.selected_tool)
@@ -135,14 +138,17 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction.y = 0
 
-            if keys[pygame.K_RIGHT]:
-                self.direction.x = 1
-                self.status = "run"
-            elif keys[pygame.K_LEFT]:
-                self.direction.x = -1
-                self.status = "run_flip"
-            else:
-                self.direction.x = 0
+            if self.detector is not None:
+                # if keys[pygame.K_RIGHT]:
+                if self.detector[1] == 1:
+                    self.direction.x = 1
+                    self.status = "run"
+                # elif keys[pygame.K_LEFT]:
+                elif self.detector[2] == 1:
+                    self.direction.x = -1
+                    self.status = "run_flip"
+                else:
+                    self.direction.x = 0
         
             # tool use
             if keys[pygame.K_t]:
@@ -152,17 +158,16 @@ class Player(pygame.sprite.Sprite):
 
         if not self.timers["attack"].active:
         # attack
-            if keys[pygame.K_z]:
-                self.K_z = 1
-            if keys[pygame.K_SPACE]:
-                self.K_SPACE = 1
-            if keys[pygame.K_SPACE]:
-                self.attacking = True
-                self.timers["attack"].activate()
-                # self.status = "attack3"
-                self.frame_index += 1
-            else:
-                self.attacking = False
+            if self.detector is not None:
+
+            # if keys[pygame.K_SPACE]:
+                if self.detector[0] == 1:
+                    self.attacking = True
+                    self.timers["attack"].activate()
+                    # self.status = "attack3"
+                    self.frame_index += 1
+                else:
+                    self.attacking = False
 
     def get_status(self):
         # idle
@@ -182,7 +187,6 @@ class Player(pygame.sprite.Sprite):
                 self.status = f"{self.weapon[self.selected_weapon][-1]}_flip"
             else:
                 self.status = self.weapon[self.selected_weapon][-1]
-            # self.status = self.weapon[self.selected_weapon][-1]
         
     def update_timers(self):
         for timer in self.timers.values():

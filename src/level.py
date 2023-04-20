@@ -1,7 +1,7 @@
 import pygame
-from settings import *
-from player import Player
-from enemy import Enemy
+from .settings import *
+from .player import Player
+from .enemy import Enemy
 
 
 class Level:
@@ -9,7 +9,9 @@ class Level:
         # self.screen = screen
         self.display_surface = pygame.display.get_surface()
         self.all_sprites = pygame.sprite.Group()
-        
+
+        self.detector = None
+
         self.setup()
 
     def setup(self):
@@ -18,6 +20,8 @@ class Level:
         self.enemy.player = self.player
         
     def run(self, dt):
+        self.player.detector = self.detector
+
         self.display_surface.fill("black")
         self.all_sprites.draw(self.display_surface)
         self.all_sprites.update(dt)
