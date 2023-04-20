@@ -122,10 +122,13 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         # change weapon
-        if keys[pygame.K_1]:
-            self.selected_weapon = "sword"
-        elif keys[pygame.K_2]:
-            self.selected_weapon = "bow"
+        if self.detector is not None:
+            # if keys[pygame.K_1]:
+            if (self.detector[3] == 1) and (self.detector[4] == 1):
+                self.selected_weapon = "sword"
+            # elif keys[pygame.K_2]:
+            if (self.detector[0] == 1) and (self.detector[4] == 1):
+                self.selected_weapon = "bow"
 
         if not self.timers["tool_use"].active:
             # directions
