@@ -13,7 +13,11 @@ python3.10 -m venv env
 ```
 
 # To Use
-É necessário uma **webcam** para movimentar o personagem. Com uma mão levantada, dedo levantado ativa a ação e abaixado desativa:
+É necessário uma **webcam** para movimentar o personagem.
+
+Com uma mão levantada, com o dedo:
+1. levantado ativa a ação
+2. abaixado desativa a ação
 
 ## Ataques
 1. Polegar - Ataque I
